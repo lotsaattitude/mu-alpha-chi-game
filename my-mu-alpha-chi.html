@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Mu Alpha Chi</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Josefin+Sans:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --pink:      #e06fa0;
+  --pinkl:     #f5b8d4;
+  --pinkp:     #fce8f2;
+  --blue:      #5b8fc9;
+  --bluel:     #a8c8f0;
+  --deep:      #0d1520;
+  --ink:       #111d2e;
+  --cream:     #f0f6ff;
+  --muted:     #7a9ab8;
+  --white:     #f8fbff;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;background:var(--deep);font-family:'Cormorant Garamond',serif;color:var(--cream);overflow:hidden}
+#game{width:100vw;height:100vh;display:flex;flex-direction:column;position:relative;overflow:hidden}
+
+#bg{position:absolute;inset:0;background:var(--ink);transition:background 1.4s ease,background-image 1.4s ease;z-index:0;background-size:cover;background-position:center;background-repeat:no-repeat}
+#bg::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 65% 25%,rgba(91,143,201,.12) 0%,transparent 55%),radial-gradient(ellipse at 25% 75%,rgba(224,111,160,.12) 0%,transparent 55%);pointer-events:none;z-index:1}
+#bg::after{content:'';position:absolute;inset:0;background:rgba(10,15,28,.5);pointer-events:none;z-index:2}
+.bgpat{position:absolute;inset:0;opacity:.09;background-image:url("data:image/svg+xml,%3Csvg width='52' height='52' viewBox='0 0 52 52' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M26 0l3 8h8l-6 5 2 8-7-4-7 4 2-8-6-5h8z' fill='%235b8fc9' fill-opacity='.5'/%3E%3C/svg%3E");pointer-events:none}
+
+#hdr{position:relative;z-index:10;display:flex;align-items:center;justify-content:center;padding:15px 40px 11px;border-bottom:1px solid rgba(91,143,201,.25);flex-shrink:0}
+#logo{font-family:'Playfair Display',serif;font-size:.95rem;letter-spacing:.38em;color:var(--bluel);text-transform:uppercase}
+#logo span{color:var(--pinkl);font-style:italic}
+
+#chtag{position:absolute;top:62px;left:18px;z-index:10;font-family:'Josefin Sans',sans-serif;font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);border:1px solid rgba(91,143,201,.2);padding:4px 11px}
+
+#stats{position:absolute;top:62px;right:18px;z-index:10;display:flex;flex-direction:column;gap:6px;font-family:'Josefin Sans',sans-serif;font-size:.56rem;letter-spacing:.12em;text-transform:uppercase}
+.st{display:flex;align-items:center;gap:7px;color:var(--muted)}
+.sl{width:62px}
+.sb{width:68px;height:3px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden}
+.sf{height:100%;border-radius:2px;transition:width .7s ease}
+.sf.lo{background:linear-gradient(90deg,var(--pink),var(--pinkl))}
+.sf.dr{background:linear-gradient(90deg,var(--blue),var(--bluel))}
+.sf.ch{background:linear-gradient(90deg,var(--pink),var(--bluel))}
+
+#sv{position:relative;z-index:5;flex:1;display:flex;align-items:flex-end;justify-content:center;overflow:hidden;min-height:0}
+#sa{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:9rem;opacity:.1;filter:blur(2px);transition:all 1s ease;user-select:none}
+#ch{position:relative;z-index:6;width:320px;height:480px;flex-shrink:0;display:block}
+
+#da{position:relative;z-index:10;flex-shrink:0;background:linear-gradient(180deg,transparent 0%,rgba(13,21,32,.97) 14%);cursor:pointer}
+#db{margin:0 auto;max-width:820px;padding:22px 34px 14px}
+#spk{font-family:'Josefin Sans',sans-serif;font-size:.63rem;letter-spacing:.28em;text-transform:uppercase;color:var(--pink);margin-bottom:7px;min-height:1.1em}
+#dt{font-size:1.13rem;line-height:1.8;color:var(--white);font-weight:300;min-height:3em;letter-spacing:.01em}
+#dt em{color:var(--pinkl);font-style:italic}
+#dt strong{color:var(--bluel)}
+.cur{display:inline-block;width:2px;height:1em;background:var(--pink);margin-left:2px;vertical-align:text-bottom;animation:blink .9s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+#hint{font-family:'Josefin Sans',sans-serif;font-size:.54rem;letter-spacing:.2em;color:var(--muted);text-align:right;padding:0 34px 7px;max-width:820px;margin:0 auto;opacity:0;transition:opacity .5s;display:block}
+#hint.on{opacity:1}
+
+#choices{max-width:820px;margin:0 auto;padding:8px 34px 20px;display:flex;flex-direction:column;gap:8px;opacity:0;transform:translateY(8px);transition:opacity .45s ease,transform .45s ease;pointer-events:none}
+#choices.on{opacity:1;transform:translateY(0);pointer-events:all}
+.cb{background:rgba(91,143,201,.07);border:1px solid rgba(91,143,201,.28);color:var(--cream);font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:300;letter-spacing:.02em;padding:11px 20px;text-align:left;cursor:pointer;transition:all .22s ease;position:relative}
+.cb::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--pink),var(--blue));transform:scaleY(0);transition:transform .2s ease;transform-origin:bottom}
+.cb:hover{background:rgba(224,111,160,.1);border-color:rgba(224,111,160,.5);padding-left:28px;color:var(--white)}
+.cb:hover::before{transform:scaleY(1)}
+
+#fl{position:fixed;inset:0;background:var(--pinkp);opacity:0;pointer-events:none;z-index:100;transition:opacity .12s}
+
+/* TITLE */
+#ts{position:fixed;inset:0;z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(150deg,#060d18 0%,#0d1520 55%,#140a18 100%);transition:opacity 1s ease}
+#ts::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 40% 40%,rgba(224,111,160,.1) 0%,transparent 55%),radial-gradient(ellipse at 65% 60%,rgba(91,143,201,.1) 0%,transparent 55%)}
+.tg{font-family:'Playfair Display',serif;font-size:clamp(3rem,9vw,6rem);font-weight:700;letter-spacing:.14em;background:linear-gradient(135deg,var(--pinkl) 0%,var(--bluel) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;position:relative}
+.ts2{font-family:'Josefin Sans',sans-serif;font-size:.7rem;letter-spacing:.5em;color:var(--muted);text-transform:uppercase;margin-top:9px}
+.div{width:108px;height:1px;background:linear-gradient(90deg,transparent,var(--pink),var(--blue),transparent);margin:18px auto 22px}
+.ttag{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.08rem;color:var(--bluel);opacity:.75;margin-bottom:48px;letter-spacing:.04em}
+#sbtn{font-family:'Josefin Sans',sans-serif;font-size:.66rem;letter-spacing:.4em;text-transform:uppercase;color:var(--pinkl);background:transparent;border:1px solid rgba(224,111,160,.4);padding:14px 44px;cursor:pointer;transition:all .3s;position:relative}
+#sbtn:hover{background:rgba(224,111,160,.1);border-color:var(--pink);letter-spacing:.48em;color:var(--white)}
+@keyframes fu{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.fu{animation:fu .8s ease forwards}
+.d1{animation-delay:.3s;opacity:0}
+.d2{animation-delay:.6s;opacity:0}
+.d3{animation-delay:.9s;opacity:0}
+.d4{animation-delay:1.3s;opacity:0}
+</style>
+</head>
+<body>
+
+<div id="ts">
+  <div class="tg fu">ΜΑΧ</div>
+  <div class="ts2 fu d1">My Mu Alpha Chi</div>
+  <div class="div fu d2"></div>
+  <div class="ttag fu d3">Secrets. Sisters. And everything in between.</div>
+  <button id="sbtn" class="fu d4" onclick="startGame()">Begin Your Story</button>
+</div>
+
+<div id="game">
+  <div id="bg"><div class="bgpat"></div></div>
+  <div id="fl"></div>
+  <div id="hdr"><div id="logo">My <span>Mu Alpha Chi</span></div></div>
+  <div id="chtag">Chapter I — Rush Week</div>
+  <div id="stats">
+    <div class="st"><span class="sl">Loyalty</span><div class="sb"><div class="sf lo" id="slo" style="width:30%"></div></div></div>
+    <div class="st"><span class="sl">Drama</span>  <div class="sb"><div class="sf dr" id="sdr" style="width:15%"></div></div></div>
+    <div class="st"><span class="sl">Charm</span>  <div class="sb"><div class="sf ch" id="sch" style="width:40%"></div></div></div>
+  </div>
+  <div id="sv">
+    <div id="sa">🌸</div>
+    <img id="ch" src="Main_Character.png" alt="Character" style="object-fit:contain;object-position:bottom;transition:opacity 0.4s ease;"></div>
+  </div>
+  <div id="da">
+    <div id="db">
+      <div id="spk"></div>
+      <div id="dt"></div>
+    </div>
+    <div id="hint">click to continue ···</div>
+    <div id="choices"></div>
+  </div>
+</div>
+
+<script>
+var S = { loyalty:30, drama:15, charm:40 };
+var cur = 'intro_1';
+var typing = false;
+var timer = null;
+var canGo = false;
+
+var STORY = {
+  intro_1:{ sp:'', tx:'Move-in weekend at Hartwell University. The air smells like gardenias and ambition.', ic:'🌸', bgi:'MAX_House.png', nx:'intro_2' },
+  intro_2:{ sp:'', tx:'You stand at the iron gate of <strong>Mu Alpha Chi house</strong> on Greek Row, invitation in hand. Your pulse quickens.', ic:'🏛️', bgi:'MAX_House.png', nx:'intro_3' },
+  intro_3:{ sp:'VIVIENNE CASTLE — President', tx:'<em>"Welcome, darling."</em> The door swings open to reveal a girl with ice-blonde hair and a smile that could mean anything. <em>"We\'ve been expecting you."</em>', ic:'✨', bgi:'MAX_House.png', nx:'intro_4' },
+  intro_4:{ sp:'VIVIENNE CASTLE — President', tx:'She tilts her head. <em>"I\'ll be direct. Rush week has... <strong>politics</strong>. Stick with me — or navigate it alone."</em> She extends her hand.', ic:'✨', bgi:'MAX_House.png', ch:[
+    { tx:'Take her hand. "I\'d love a guide."', nx:'ally_v', st:{loyalty:10,charm:5} },
+    { tx:'Smile politely. "I think I can handle myself."', nx:'indep', st:{drama:10,charm:8} },
+    { tx:'Ask quietly, "What kind of politics?"', nx:'curious', st:{loyalty:5,drama:5} }
+  ]},
+
+  ally_v:{ sp:'VIVIENNE', tx:'Her smile warms — genuinely, just for a moment. <em>"Good choice."</em> She leads you into a grand foyer lit by chandelier light and glittering conversation.', ic:'🕯️', bgi:'Mixer.png', nx:'party_n' },
+  indep:{ sp:'', tx:'Something flickers in Vivienne\'s eyes — respect, or a warning. She steps aside, sweeping her arm toward the glittering room. <em>"Suit yourself."</em>', ic:'🌙', bgi:'Mixer.png', nx:'party_n' },
+  curious:{ sp:'VIVIENNE', tx:'<em>"Smart question."</em> She lowers her voice. <em>"There\'s a rumor about <strong>last year\'s initiation</strong>. Someone\'s trying to use it. Watch what you say tonight."</em>', ic:'🌙', bgi:'Mixer.png', nx:'party_n', st:{drama:8} },
+
+  party_n:{ sp:'', tx:'The Rush mixer is everything you imagined — string lights, champagne flutes, and sisters sizing up pledges with practiced smiles.', ic:'🥂', bgi:'Mixer.png', nx:'party_2', cp:'Chapter I — The Mixer' },
+  party_2:{ sp:'MADELEINE "MADDIE" CROSS', tx:'A girl with warm eyes and paint-stained fingers finds you near the drinks table. <em>"Don\'t let this overwhelm you. I\'m Maddie — third year. You look like you could use a real friend in here."</em>', ic:'🥂', bgi:'Mixer.png', ch:[
+    { tx:'"I\'d love that. Tell me everything."', nx:'m_bond', st:{loyalty:15} },
+    { tx:'"What\'s your angle?"', nx:'m_guard', st:{drama:8} },
+    { tx:'"Cute bracelet — is that a Mu Alpha Chi charm?"', nx:'m_charm', st:{charm:12} }
+  ]},
+
+  m_bond:{ sp:'MADDIE', tx:'She laughs softly. <em>"Finally — someone real."</em> She leans in. <em>"Here\'s what nobody tells you: Mu Alpha Chi has a secret ritual called <strong>the Ivory Vow</strong>. If you\'re asked to take it, think carefully."</em>', ic:'🌙', bgi:'Mixer.png', nx:'p_reveal', st:{loyalty:10} },
+  m_guard:{ sp:'MADDIE', tx:'She blinks — then smiles slowly. <em>"Fair. My angle is: I was you two years ago, and I wish someone had warned me."</em> She sets down her glass and walks away.', ic:'🌙', bgi:'Mixer.png', nx:'p_reveal' },
+  m_charm:{ sp:'MADDIE', tx:'She fingers the charm. <em>"Every sister gets one after the Ivory Vow ceremony."</em> Her smile doesn\'t quite reach her eyes. <em>"It\'s... meaningful."</em>', ic:'🌙', bgi:'Mixer.png', nx:'p_reveal' },
+
+  p_reveal:{ sp:'', tx:'Later that night, a sealed envelope slides under your door. Inside, elegant script reads: <strong>"You have been selected. Report to the East Garden at midnight. — The Sisters of Mu Alpha Chi."</strong>', ic:'💌', bgi:'Garden.png', nx:'p_choice', cp:'Chapter II — The Invitation' },
+  p_choice:{ sp:'', tx:'Midnight. The garden glows with candlelight. Vivienne stands at the center, flanked by sisters in white dresses. She looks at you — waiting.', ic:'🕯️', bgi:'Garden.png', ch:[
+    { tx:'Step forward. You\'re ready to belong.', nx:'p_yes', st:{loyalty:20} },
+    { tx:'Ask what the Ivory Vow means before you commit.', nx:'p_ask', st:{charm:8,drama:8} },
+    { tx:'Step back. Something feels off.', nx:'p_no', st:{drama:15} }
+  ]},
+
+  p_yes:{ sp:'VIVIENNE', tx:'She places a hand over her heart. <em>"The Ivory Vow is simple: <strong>what happens in Mu Alpha Chi stays in Mu Alpha Chi.</strong> Sisters before everything."</em> The candles flicker. The night holds its breath.', ic:'🕯️', bgi:'Garden.png', nx:'ch3_1', st:{loyalty:15} },
+  p_ask:{ sp:'VIVIENNE', tx:'A beat of silence. <em>"You\'re exactly what this house needs."</em> She explains: the Vow is a promise of discretion. Sisterhood above all. But Maddie catches your eye and <strong>shakes her head slightly</strong>.', ic:'🕯️', bgi:'Garden.png', nx:'ch3_1', st:{drama:12} },
+  p_no:{ sp:'VIVIENNE', tx:'The temperature drops. <em>"Interesting."</em> She studies you like a chess piece out of place. <em>"Courage — or foolishness. We\'ll find out which."</em> The ceremony continues without you.', ic:'🌙', bgi:'Garden.png', nx:'ch3_1', st:{drama:20} },
+
+  ch3_1:{ sp:'', tx:'The next morning, campus buzzes with whispers. Someone posted anonymously on the Hartwell forum: <strong>"Ask Mu Alpha Chi what really happened at last year\'s Founder\'s Gala."</strong>', ic:'📱', bg:'radial-gradient(ellipse at 60% 20%,#0f1828,#080d18)', nx:'ch3_2', cp:"Chapter III — The Rumor" },
+  ch3_2:{ sp:'VIVIENNE', tx:'She finds you between classes, voice low and controlled. <em>"Someone inside the house is talking. I need to know who."</em> Her eyes search yours. <em>"Are you with us?"</em>', ic:'📱', bg:'radial-gradient(ellipse at 60% 20%,#0f1828,#080d18)', ch:[
+    { tx:'"Yes. I\'ll help you find out who."', nx:'inv', st:{loyalty:15,drama:5} },
+    { tx:'"Maybe the post is telling the truth?"', nx:'tru', st:{drama:20} },
+    { tx:'"I\'ll stay out of it."', nx:'neu', st:{charm:5} }
+  ]},
+
+  inv:{ sp:'MADDIE', tx:'You find Maddie alone in the art studio. She looks up, and you see it in her face before she speaks. <em>"It was me,"</em> she says quietly. <em>"Because what happened at that Gala was <strong>wrong</strong>. And you deserve to know."</em>', ic:'🖼️', bgi:'art_studio.png', nx:'end_ch' },
+  tru:{ sp:'VIVIENNE', tx:'Something shifts in Vivienne\'s expression — pain, quickly buried. <em>"You don\'t know what you\'re talking about."</em> She leaves. Maddie appears at your shoulder: <em>"Thank you for saying that."</em>', ic:'🌙', bgi:'art_studio.png', nx:'end_ch', st:{loyalty:5} },
+  neu:{ sp:'', tx:'You watch from a distance as the house fractures — Vivienne and Maddie on opposite sides of a secret that grows larger by the hour. Somehow, both of them are still watching you.', ic:'🌙', bgi:'art_studio.png', nx:'end_ch' },
+
+  end_ch:{ sp:'', tx:'The Founder\'s Gala is in three days. Vivienne wants your loyalty. Maddie wants your conscience. Somewhere between them is the truth about <strong>Mu Alpha Chi</strong>.', ic:'🥂', bgi:'gala.png', ch:[
+    { tx:'Stand with Vivienne at the Gala. Protect the sisterhood.', nx:'e_loy', st:{loyalty:20} },
+    { tx:'Stand with Maddie. Let the truth come out.', nx:'e_tru', st:{drama:20} },
+    { tx:'Find a way to protect both of them.', nx:'e_bri', st:{charm:20,loyalty:10} }
+  ]},
+
+  e_loy:{ sp:'', tx:'<em>The Loyal Sister.</em> You choose the house. Vivienne squeezes your hand at the Gala as the whispers die down. <strong>Mu Alpha Chi stands.</strong> But Maddie\'s empty seat at the dinner table will stay with you for a long time.', ic:'✨', bgi:'gala.png', nx:'fin' },
+  e_tru:{ sp:'', tx:'<em>The Truth-Teller.</em> The Gala becomes the night Mu Alpha Chi is forced to reckon with itself. It\'s painful. But Maddie hugs you afterward, eyes bright. <strong>Some bonds are forged in honesty.</strong>', ic:'🌸', bgi:'gala.png', nx:'fin' },
+  e_bri:{ sp:'', tx:'<em>The Peacemaker.</em> You broker a private meeting between Vivienne and Maddie before the Gala. What happens in that room changes everything. <strong>Mu Alpha Chi survives — and so do both of them.</strong>', ic:'💌', bgi:'gala.png', nx:'fin' },
+
+  fin:{ sp:'', tx:'<strong>Chapter One Complete.</strong> Your story in Mu Alpha Chi is just beginning. The Ivory Vow holds secrets no one has spoken aloud — yet. More sisters. More choices. More to uncover.\n\n<em>Thank you for playing My Mu Alpha Chi. 🌸</em>', ic:'✨', bgi:'gala.png', nx:null }
+};
+
+function updStats(){
+  document.getElementById('slo').style.width=Math.min(100,Math.max(0,S.loyalty))+'%';
+  document.getElementById('sdr').style.width=Math.min(100,Math.max(0,S.drama))+'%';
+  document.getElementById('sch').style.width=Math.min(100,Math.max(0,S.charm))+'%';
+}
+
+function apStat(s){
+  if(!s)return;
+  for(var k in s) S[k]=Math.min(100,Math.max(0,(S[k]||0)+s[k]));
+  updStats();
+}
+
+function flash(){
+  var f=document.getElementById('fl');
+  f.style.opacity='.28';
+  setTimeout(function(){f.style.opacity='0';},160);
+}
+
+function showNode(id){
+  var n=STORY[id];
+  if(!n){console.error('Missing node:',id);return;}
+  cur=id;
+
+  document.getElementById('sa').textContent=n.ic||'🌸';
+  document.getElementById('sa').style.opacity = n.bgi ? '0' : '0.1';
+  var bgEl = document.getElementById('bg');
+  if(n.bgi){
+    bgEl.style.backgroundImage = 'url(' + n.bgi + ')';
+    bgEl.style.background = '';
+  } else {
+    bgEl.style.backgroundImage = '';
+    if(n.bg) bgEl.style.background = n.bg;
+  }
+  if(n.cp) document.getElementById('chtag').textContent=n.cp;
+  if(n.st) apStat(n.st);
+
+  // Swap character portrait based on speaker
+  var chImg = document.getElementById('ch');
+  var spk = (n.sp||'').toUpperCase();
+  var newSrc = spk.indexOf('VIVIENNE') >= 0 ? 'Vivienne.png'
+             : spk.indexOf('MADDIE') >= 0   ? 'maddie.png'
+             : 'Main_Character.png';
+  if(chImg.src.indexOf(newSrc) < 0){
+    chImg.style.opacity = '0';
+    setTimeout(function(){ chImg.src = newSrc; chImg.style.opacity = '1'; }, 300);
+  }
+
+  var cel=document.getElementById('choices');
+  cel.innerHTML='';
+  cel.classList.remove('on');
+  var hint=document.getElementById('hint');
+  hint.classList.remove('on');
+  canGo=false;
+
+  typeText(n.sp||'', n.tx, function(){
+    if(n.ch && n.ch.length){
+      showChoices(n.ch);
+    } else if(n.nx){
+      hint.classList.add('on');
+      canGo=true;
+    } else {
+      hint.textContent='— end of chapter one —';
+      hint.classList.add('on');
+    }
+  });
+}
+
+function typeText(sp, tx, done){
+  document.getElementById('spk').textContent=sp;
+  var el=document.getElementById('dt');
+  el.innerHTML='';
+  typing=true;
+  canGo=false;
+
+  var tmp=document.createElement('div');
+  tmp.innerHTML=tx;
+  var plain=tmp.textContent||'';
+
+  var i=0;
+  clearInterval(timer);
+  timer=setInterval(function(){
+    i++;
+    el.textContent=plain.substring(0,i);
+    var c=document.createElement('span');
+    c.className='cur';
+    el.appendChild(c);
+    if(i>=plain.length){
+      clearInterval(timer);
+      el.innerHTML=tx;
+      typing=false;
+      if(done)done();
+    }
+  },24);
+}
+
+function showChoices(list){
+  var el=document.getElementById('choices');
+  el.innerHTML='';
+  list.forEach(function(c){
+    var b=document.createElement('button');
+    b.className='cb';
+    b.textContent=c.tx;
+    b.onclick=function(){
+      flash();
+      apStat(c.st);
+      setTimeout(function(){showNode(c.nx);},200);
+    };
+    el.appendChild(b);
+  });
+  requestAnimationFrame(function(){
+    requestAnimationFrame(function(){
+      el.classList.add('on');
+    });
+  });
+}
+
+function advance(){
+  if(typing){
+    clearInterval(timer);
+    var n=STORY[cur];
+    document.getElementById('dt').innerHTML=n.tx;
+    typing=false;
+    if(n.ch && n.ch.length){
+      showChoices(n.ch);
+    } else if(n.nx){
+      document.getElementById('hint').classList.add('on');
+      canGo=true;
+    }
+    return;
+  }
+  if(!canGo)return;
+  canGo=false;
+  document.getElementById('hint').classList.remove('on');
+  var n=STORY[cur];
+  if(n && n.nx){
+    flash();
+    setTimeout(function(){showNode(n.nx);},200);
+  }
+}
+
+document.getElementById('da').addEventListener('click',function(e){
+  if(e.target.classList.contains('cb'))return;
+  advance();
+});
+document.addEventListener('keydown',function(e){
+  if(e.code==='Space'||e.code==='Enter'){e.preventDefault();advance();}
+});
+
+function startGame(){
+  var ts=document.getElementById('ts');
+  ts.style.opacity='0';
+  ts.style.pointerEvents='none';
+  setTimeout(function(){
+    ts.style.display='none';
+    showNode('intro_1');
+  },1000);
+}
+</script>
+</body>
+</html>
