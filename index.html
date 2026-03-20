@@ -80,7 +80,7 @@ html,body{width:100%;height:100%;background:var(--deep);font-family:'Cormorant G
 .fu{animation:fu .8s ease forwards}
 .d1{animation-delay:.3s;opacity:0}
 .d2{animation-delay:.6s;opacity:0}
-.d3{animation-delay:.9s;opacity:0}
+.d3{animation-delay:1.3s;opacity:0}
 .d4{animation-delay:1.3s;opacity:0}
 </style>
 </head>
@@ -106,7 +106,7 @@ html,body{width:100%;height:100%;background:var(--deep);font-family:'Cormorant G
   </div>
   <div id="sv">
     <div id="sa">🌸</div>
-    <img id="ch" src="Main_Character.png" alt="Character" style="object-fit:contain;object-position:bottom;transition:opacity 0.4s ease;"></div>
+    <img id="ch" src="Main Character.png" alt="Character" style="object-fit:contain;object-position:bottom;transition:opacity 0.4s ease;">
   </div>
   <div id="da">
     <div id="db">
@@ -126,63 +126,63 @@ var timer = null;
 var canGo = false;
 
 var STORY = {
-  intro_1:{ sp:'', tx:'Move-in weekend at Hartwell University. The air smells like gardenias and ambition.', ic:'🌸', bgi:'MAX_House.png', nx:'intro_2' },
-  intro_2:{ sp:'', tx:'You stand at the iron gate of <strong>Mu Alpha Chi house</strong> on Greek Row, invitation in hand. Your pulse quickens.', ic:'🏛️', bgi:'MAX_House.png', nx:'intro_3' },
-  intro_3:{ sp:'VIVIENNE CASTLE — President', tx:'<em>"Welcome, darling."</em> The door swings open to reveal a girl with ice-blonde hair and a smile that could mean anything. <em>"We\'ve been expecting you."</em>', ic:'✨', bgi:'MAX_House.png', nx:'intro_4' },
-  intro_4:{ sp:'VIVIENNE CASTLE — President', tx:'She tilts her head. <em>"I\'ll be direct. Rush week has... <strong>politics</strong>. Stick with me — or navigate it alone."</em> She extends her hand.', ic:'✨', bgi:'MAX_House.png', ch:[
-    { tx:'Take her hand. "I\'d love a guide."', nx:'ally_v', st:{loyalty:10,charm:5} },
+  intro_1:{ sp:'', tx:'Move-in weekend at Hartwell University. The air smells like gardenias and ambition.', ic:'🌸', bgi:'MAX House.png', nx:'intro_2' },
+  intro_2:{ sp:'', tx:'You stand at the iron gate of <strong>Mu Alpha Chi house</strong> on Greek Row, invitation in hand. Your pulse quickens.', ic:'🏛️', bgi:'MAX House.png', nx:'intro_3' },
+  intro_3:{ sp:'VIVIENNE CASTLE — President', tx:'<em>"Welcome, darling."</em> The door swings open to reveal a striking Black woman with sleek pressed black hair, a flawless beat, and a cool smile that does not quite reach her eyes. <em>"We\\'ve been expecting you."</em>', ic:'✨', bgi:'MAX House.png', nx:'intro_4' },
+  intro_4:{ sp:'VIVIENNE CASTLE — President', tx:'She tilts her head. <em>"I\\'ll be direct. Rush week has... <strong>politics</strong>. Stick with me — or navigate it alone."</em> She extends her hand.', ic:'✨', bgi:'MAX House.png', ch:[
+    { tx:'Take her hand. "I\\'d love a guide."', nx:'ally_v', st:{loyalty:10,charm:5} },
     { tx:'Smile politely. "I think I can handle myself."', nx:'indep', st:{drama:10,charm:8} },
     { tx:'Ask quietly, "What kind of politics?"', nx:'curious', st:{loyalty:5,drama:5} }
   ]},
 
   ally_v:{ sp:'VIVIENNE', tx:'Her smile warms — genuinely, just for a moment. <em>"Good choice."</em> She leads you into a grand foyer lit by chandelier light and glittering conversation.', ic:'🕯️', bgi:'Mixer.png', nx:'party_n' },
-  indep:{ sp:'', tx:'Something flickers in Vivienne\'s eyes — respect, or a warning. She steps aside, sweeping her arm toward the glittering room. <em>"Suit yourself."</em>', ic:'🌙', bgi:'Mixer.png', nx:'party_n' },
-  curious:{ sp:'VIVIENNE', tx:'<em>"Smart question."</em> She lowers her voice. <em>"There\'s a rumor about <strong>last year\'s initiation</strong>. Someone\'s trying to use it. Watch what you say tonight."</em>', ic:'🌙', bgi:'Mixer.png', nx:'party_n', st:{drama:8} },
+  indep:{ sp:'', tx:'Something flickers in Vivienne\\'s eyes — respect, or a warning. She steps aside, sweeping her arm toward the glittering room. <em>"Suit yourself."</em>', ic:'🌙', bgi:'Mixer.png', nx:'party_n' },
+  curious:{ sp:'VIVIENNE', tx:'<em>"Smart question."</em> She lowers her voice. <em>"There\\'s a rumor about <strong>last year\\'s initiation</strong>. Someone\\'s trying to use it. Watch what you say tonight."</em>', ic:'🌙', bgi:'Mixer.png', nx:'party_n', st:{drama:8} },
 
   party_n:{ sp:'', tx:'The Rush mixer is everything you imagined — string lights, champagne flutes, and sisters sizing up pledges with practiced smiles.', ic:'🥂', bgi:'Mixer.png', nx:'party_2', cp:'Chapter I — The Mixer' },
-  party_2:{ sp:'MADELEINE "MADDIE" CROSS', tx:'A girl with warm eyes and paint-stained fingers finds you near the drinks table. <em>"Don\'t let this overwhelm you. I\'m Maddie — third year. You look like you could use a real friend in here."</em>', ic:'🥂', bgi:'Mixer.png', ch:[
-    { tx:'"I\'d love that. Tell me everything."', nx:'m_bond', st:{loyalty:15} },
-    { tx:'"What\'s your angle?"', nx:'m_guard', st:{drama:8} },
+  party_2:{ sp:'MADELEINE "MADDIE" CROSS', tx:'A girl with warm eyes and paint-stained fingers finds you near the drinks table. <em>"Don\\'t let this overwhelm you. I\\'m Maddie — third year. You look like you could use a real friend in here."</em>', ic:'🥂', bgi:'Mixer.png', ch:[
+    { tx:'"I\\'d love that. Tell me everything."', nx:'m_bond', st:{loyalty:15} },
+    { tx:'"What\\'s your angle?"', nx:'m_guard', st:{drama:8} },
     { tx:'"Cute bracelet — is that a Mu Alpha Chi charm?"', nx:'m_charm', st:{charm:12} }
   ]},
 
-  m_bond:{ sp:'MADDIE', tx:'She laughs softly. <em>"Finally — someone real."</em> She leans in. <em>"Here\'s what nobody tells you: Mu Alpha Chi has a secret ritual called <strong>the Ivory Vow</strong>. If you\'re asked to take it, think carefully."</em>', ic:'🌙', bgi:'Mixer.png', nx:'p_reveal', st:{loyalty:10} },
+  m_bond:{ sp:'MADDIE', tx:'She laughs softly. <em>"Finally — someone real."</em> She leans in. <em>"Here\\'s what nobody tells you: Mu Alpha Chi has a secret ritual called <strong>the Ivory Vow</strong>. If you\\'re asked to take it, think carefully."</em>', ic:'🌙', bgi:'Mixer.png', nx:'p_reveal', st:{loyalty:10} },
   m_guard:{ sp:'MADDIE', tx:'She blinks — then smiles slowly. <em>"Fair. My angle is: I was you two years ago, and I wish someone had warned me."</em> She sets down her glass and walks away.', ic:'🌙', bgi:'Mixer.png', nx:'p_reveal' },
-  m_charm:{ sp:'MADDIE', tx:'She fingers the charm. <em>"Every sister gets one after the Ivory Vow ceremony."</em> Her smile doesn\'t quite reach her eyes. <em>"It\'s... meaningful."</em>', ic:'🌙', bgi:'Mixer.png', nx:'p_reveal' },
+  m_charm:{ sp:'MADDIE', tx:'She fingers the charm. <em>"Every sister gets one after the Ivory Vow ceremony."</em> Her smile doesn\\'t quite reach her eyes. <em>"It\\'s... meaningful."</em>', ic:'🌙', bgi:'Mixer.png', nx:'p_reveal' },
 
   p_reveal:{ sp:'', tx:'Later that night, a sealed envelope slides under your door. Inside, elegant script reads: <strong>"You have been selected. Report to the East Garden at midnight. — The Sisters of Mu Alpha Chi."</strong>', ic:'💌', bgi:'Garden.png', nx:'p_choice', cp:'Chapter II — The Invitation' },
   p_choice:{ sp:'', tx:'Midnight. The garden glows with candlelight. Vivienne stands at the center, flanked by sisters in white dresses. She looks at you — waiting.', ic:'🕯️', bgi:'Garden.png', ch:[
-    { tx:'Step forward. You\'re ready to belong.', nx:'p_yes', st:{loyalty:20} },
+    { tx:'Step forward. You\\'re ready to belong.', nx:'p_yes', st:{loyalty:20} },
     { tx:'Ask what the Ivory Vow means before you commit.', nx:'p_ask', st:{charm:8,drama:8} },
     { tx:'Step back. Something feels off.', nx:'p_no', st:{drama:15} }
   ]},
 
   p_yes:{ sp:'VIVIENNE', tx:'She places a hand over her heart. <em>"The Ivory Vow is simple: <strong>what happens in Mu Alpha Chi stays in Mu Alpha Chi.</strong> Sisters before everything."</em> The candles flicker. The night holds its breath.', ic:'🕯️', bgi:'Garden.png', nx:'ch3_1', st:{loyalty:15} },
-  p_ask:{ sp:'VIVIENNE', tx:'A beat of silence. <em>"You\'re exactly what this house needs."</em> She explains: the Vow is a promise of discretion. Sisterhood above all. But Maddie catches your eye and <strong>shakes her head slightly</strong>.', ic:'🕯️', bgi:'Garden.png', nx:'ch3_1', st:{drama:12} },
-  p_no:{ sp:'VIVIENNE', tx:'The temperature drops. <em>"Interesting."</em> She studies you like a chess piece out of place. <em>"Courage — or foolishness. We\'ll find out which."</em> The ceremony continues without you.', ic:'🌙', bgi:'Garden.png', nx:'ch3_1', st:{drama:20} },
+  p_ask:{ sp:'VIVIENNE', tx:'A beat of silence. <em>"You\\'re exactly what this house needs."</em> She explains: the Vow is a promise of discretion. Sisterhood above all. But Maddie catches your eye and <strong>shakes her head slightly</strong>.', ic:'🕯️', bgi:'Garden.png', nx:'ch3_1', st:{drama:12} },
+  p_no:{ sp:'VIVIENNE', tx:'The temperature drops. <em>"Interesting."</em> She studies you like a chess piece out of place. <em>"Courage — or foolishness. We\\'ll find out which."</em> The ceremony continues without you.', ic:'🌙', bgi:'Garden.png', nx:'ch3_1', st:{drama:20} },
 
-  ch3_1:{ sp:'', tx:'The next morning, campus buzzes with whispers. Someone posted anonymously on the Hartwell forum: <strong>"Ask Mu Alpha Chi what really happened at last year\'s Founder\'s Gala."</strong>', ic:'📱', bg:'radial-gradient(ellipse at 60% 20%,#0f1828,#080d18)', nx:'ch3_2', cp:"Chapter III — The Rumor" },
+  ch3_1:{ sp:'', tx:'The next morning, campus buzzes with whispers. Someone posted anonymously on the Hartwell forum: <strong>"Ask Mu Alpha Chi what really happened at last year\\'s Founder\\'s Gala."</strong>', ic:'📱', bg:'radial-gradient(ellipse at 60% 20%,#0f1828,#080d18)', nx:'ch3_2', cp:\"Chapter III — The Rumor\" },
   ch3_2:{ sp:'VIVIENNE', tx:'She finds you between classes, voice low and controlled. <em>"Someone inside the house is talking. I need to know who."</em> Her eyes search yours. <em>"Are you with us?"</em>', ic:'📱', bg:'radial-gradient(ellipse at 60% 20%,#0f1828,#080d18)', ch:[
-    { tx:'"Yes. I\'ll help you find out who."', nx:'inv', st:{loyalty:15,drama:5} },
+    { tx:'"Yes. I\\'ll help you find out who."', nx:'inv', st:{loyalty:15,drama:5} },
     { tx:'"Maybe the post is telling the truth?"', nx:'tru', st:{drama:20} },
-    { tx:'"I\'ll stay out of it."', nx:'neu', st:{charm:5} }
+    { tx:'"I\\'ll stay out of it."', nx:'neu', st:{charm:5} }
   ]},
 
-  inv:{ sp:'MADDIE', tx:'You find Maddie alone in the art studio. She looks up, and you see it in her face before she speaks. <em>"It was me,"</em> she says quietly. <em>"Because what happened at that Gala was <strong>wrong</strong>. And you deserve to know."</em>', ic:'🖼️', bgi:'art_studio.png', nx:'end_ch' },
-  tru:{ sp:'VIVIENNE', tx:'Something shifts in Vivienne\'s expression — pain, quickly buried. <em>"You don\'t know what you\'re talking about."</em> She leaves. Maddie appears at your shoulder: <em>"Thank you for saying that."</em>', ic:'🌙', bgi:'art_studio.png', nx:'end_ch', st:{loyalty:5} },
-  neu:{ sp:'', tx:'You watch from a distance as the house fractures — Vivienne and Maddie on opposite sides of a secret that grows larger by the hour. Somehow, both of them are still watching you.', ic:'🌙', bgi:'art_studio.png', nx:'end_ch' },
+  inv:{ sp:'MADDIE', tx:'You find Maddie alone in the art studio. She looks up, and you see it in her face before she speaks. <em>"It was me,"</em> she says quietly. <em>"Because what happened at that Gala was <strong>wrong</strong>. And you deserve to know."</em>', ic:'🖼️', bgi:'art studio.png', nx:'end_ch' },
+  tru:{ sp:'VIVIENNE', tx:'Something shifts in Vivienne\\'s expression — pain, quickly buried. <em>"You don\\'t know what you\\'re talking about."</em> She leaves. Maddie appears at your shoulder: <em>"Thank you for saying that."</em>', ic:'🌙', bgi:'art studio.png', nx:'end_ch', st:{loyalty:5} },
+  neu:{ sp:'', tx:'You watch from a distance as the house fractures — Vivienne and Maddie on opposite sides of a secret that grows larger by the hour. Somehow, both of them are still watching you.', ic:'🌙', bgi:'art studio.png', nx:'end_ch' },
 
-  end_ch:{ sp:'', tx:'The Founder\'s Gala is in three days. Vivienne wants your loyalty. Maddie wants your conscience. Somewhere between them is the truth about <strong>Mu Alpha Chi</strong>.', ic:'🥂', bgi:'gala.png', ch:[
+  end_ch:{ sp:'', tx:'The Founder\\'s Gala is in three days. Vivienne wants your loyalty. Maddie wants your conscience. Somewhere between them is the truth about <strong>Mu Alpha Chi</strong>.', ic:'🥂', bgi:'gala.png', ch:[
     { tx:'Stand with Vivienne at the Gala. Protect the sisterhood.', nx:'e_loy', st:{loyalty:20} },
     { tx:'Stand with Maddie. Let the truth come out.', nx:'e_tru', st:{drama:20} },
     { tx:'Find a way to protect both of them.', nx:'e_bri', st:{charm:20,loyalty:10} }
   ]},
 
-  e_loy:{ sp:'', tx:'<em>The Loyal Sister.</em> You choose the house. Vivienne squeezes your hand at the Gala as the whispers die down. <strong>Mu Alpha Chi stands.</strong> But Maddie\'s empty seat at the dinner table will stay with you for a long time.', ic:'✨', bgi:'gala.png', nx:'fin' },
-  e_tru:{ sp:'', tx:'<em>The Truth-Teller.</em> The Gala becomes the night Mu Alpha Chi is forced to reckon with itself. It\'s painful. But Maddie hugs you afterward, eyes bright. <strong>Some bonds are forged in honesty.</strong>', ic:'🌸', bgi:'gala.png', nx:'fin' },
+  e_loy:{ sp:'', tx:'<em>The Loyal Sister.</em> You choose the house. Vivienne squeezes your hand at the Gala as the whispers die down. <strong>Mu Alpha Chi stands.</strong> But Maddie\\'s empty seat at the dinner table will stay with you for a long time.', ic:'✨', bgi:'gala.png', nx:'fin' },
+  e_tru:{ sp:'', tx:'<em>The Truth-Teller.</em> The Gala becomes the night Mu Alpha Chi is forced to reckon with itself. It\\'s painful. But Maddie hugs you afterward, eyes bright. <strong>Some bonds are forged in honesty.</strong>', ic:'🌸', bgi:'gala.png', nx:'fin' },
   e_bri:{ sp:'', tx:'<em>The Peacemaker.</em> You broker a private meeting between Vivienne and Maddie before the Gala. What happens in that room changes everything. <strong>Mu Alpha Chi survives — and so do both of them.</strong>', ic:'💌', bgi:'gala.png', nx:'fin' },
 
-  fin:{ sp:'', tx:'<strong>Chapter One Complete.</strong> Your story in Mu Alpha Chi is just beginning. The Ivory Vow holds secrets no one has spoken aloud — yet. More sisters. More choices. More to uncover.\n\n<em>Thank you for playing My Mu Alpha Chi. 🌸</em>', ic:'✨', bgi:'gala.png', nx:null }
+  fin:{ sp:'', tx:'<strong>Chapter One Complete.</strong> Your story in Mu Alpha Chi is just beginning. The Ivory Vow holds secrets no one has spoken aloud — yet. More sisters. More choices. More to uncover.\\n\\n<em>Thank you for playing My Mu Alpha Chi. 🌸</em>', ic:'✨', bgi:'gala.png', nx:null }
 };
 
 function updStats(){
@@ -221,12 +221,11 @@ function showNode(id){
   if(n.cp) document.getElementById('chtag').textContent=n.cp;
   if(n.st) apStat(n.st);
 
-  // Swap character portrait based on speaker
   var chImg = document.getElementById('ch');
   var spk = (n.sp||'').toUpperCase();
   var newSrc = spk.indexOf('VIVIENNE') >= 0 ? 'Vivienne.png'
              : spk.indexOf('MADDIE') >= 0   ? 'maddie.png'
-             : 'Main_Character.png';
+             : 'Main Character.png';
   if(chImg.src.indexOf(newSrc) < 0){
     chImg.style.opacity = '0';
     setTimeout(function(){ chImg.src = newSrc; chImg.style.opacity = '1'; }, 300);
