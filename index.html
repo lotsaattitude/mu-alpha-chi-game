@@ -106,7 +106,7 @@ html,body{width:100%;height:100%;background:var(--deep);font-family:'Cormorant G
   </div>
   <div id="sv">
     <div id="sa">🌸</div>
-    <img id="ch" src="Main Character.png" alt="Character" style="object-fit:contain;object-position:bottom;transition:opacity 0.4s ease;">
+    <img id="ch" src="MainCharacter.png" alt="Character" style="object-fit:contain;object-position:bottom;transition:opacity 0.4s ease;">
   </div>
   <div id="da">
     <div id="db">
@@ -225,7 +225,7 @@ function showNode(id){
   var spk = (n.sp||'').toUpperCase();
   var newSrc = spk.indexOf('VIVIENNE') >= 0 ? 'Vivienne.png'
              : spk.indexOf('MADDIE') >= 0   ? 'maddie.png'
-             : 'Main Character.png';
+             : 'MainCharacter.png';
   if(chImg.src.indexOf(newSrc) < 0){
     chImg.style.opacity = '0';
     setTimeout(function(){ chImg.src = newSrc; chImg.style.opacity = '1'; }, 300);
